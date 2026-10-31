@@ -73,7 +73,7 @@ MARK = 0x41434431
 IDLE_LEVEL = 1 << 14
 TRIG, SLIDE, GLIDE = 1, 2, 3
 MODS = 0x404e9b80                  # enregistrement de Mod Settings (notes/72) : réglages ACID en octets 6..9 (notes/88)
-ACFG_N = (7, 2, 4, 2)              # AcidSlide, Legato, Accent, Decay : nombre de valeurs
+ACFG_N = (7, 2, 4, 2)              # Slide, Legato, Accent, Decay : nombre de valeurs
 
 
 def acid_cfg(rec):
@@ -794,20 +794,20 @@ def articulation(fw, ref, label):
          lambda r: r["slide_a"] == k["ACID_SLIDE_A"] and not r["acc"] and not r["dec_df"]),
         ("valeurs hors bornes : 303", mods_record(slide=9, legato=5, accent=7, decay=3), tie, None, "TSS",
          lambda r: r["slide_a"] == k["ACID_SLIDE_A"] and not r["acc"] and not r["dec_df"]),
-        ("AcidSlide OFF : lié, la hauteur saute", mods_record(slide=1), tie, None, "TSS",
+        ("Slide OFF : lié, la hauteur saute", mods_record(slide=1), tie, None, "TSS",
          lambda r: r["slide_a"] == one),
-        ("AcidSlide 360 ms", mods_record(slide=6), tie, None, "TSS",
+        ("Slide 360 ms", mods_record(slide=6), tie, None, "TSS",
          lambda r: r["slide_a"] == t["ACID_SLIDE_T"][6]),
-        ("AcidTie OFF : l'OS voit les trigs liés, la hauteur glisse, le MEG repart", mods_record(legato=1), tie,
+        ("Tie OFF : l'OS voit les trigs liés, la hauteur glisse, le MEG repart", mods_record(legato=1), tie,
          None, "TGG", lambda r: True),
-        ("AcidTie OFF + Slide 240 ms", mods_record(slide=5, legato=1), tie, None, "TGG",
+        ("Tie OFF + Slide 240 ms", mods_record(slide=5, legato=1), tie, None, "TGG",
          lambda r: r["slide_a"] == t["ACID_SLIDE_T"][5]),
-        ("AcidAccnt HIGH, vélocités 127 x 3 puis 64", mods_record(accent=3), acc, dict(shape=120, decay=60),
+        ("Accent HIGH, vélocités 127 x 3 puis 64", mods_record(accent=3), acc, dict(shape=120, decay=60),
          "TTTT", lambda r: r["acc"] == t["ACID_ACC_T"][3]),
-        ("AcidAccnt LOW sur un slide accentué", mods_record(accent=1),
+        ("Accent LOW sur un slide accentué", mods_record(accent=1),
          [(0, dict(note=36, length=L.LEN_106, vel=64)), (1, dict(note=48, vel=127))], None, "TS",
          lambda r: r["acc"] == t["ACID_ACC_T"][1]),
-        ("AcidDecay DF", mods_record(decay=1), [(0, dict(note=36)), (2, dict(note=48))], dict(decay=0), "TT",
+        ("Decay DF", mods_record(decay=1), [(0, dict(note=36)), (2, dict(note=48))], dict(decay=0), "TT",
          lambda r: r["dec_df"] == 1),
         ("tout à la fois", mods_record(slide=3, legato=1, accent=2, decay=1), tie + [(4, dict(note=36, vel=127))],
          dict(shape=100), "TGGT", lambda r: True),
@@ -817,11 +817,11 @@ def articulation(fw, ref, label):
         why, peak = pr.verify(ref)
         trigs = [r for r in pr.recs[0] if r["trig"]]
         extra = [] if trigs and all(ok(r) for r in trigs) else ["réglages du cœur"]
-        if name.startswith("AcidAccnt HIGH"):
+        if name.startswith("Accent HIGH"):
             flags = [r["accent"] for r in trigs]
             dec = [r["decay"] for r in trigs]
             extra += [] if flags == [1, 1, 1, 0] and dec[:3] == [0, 0, 0] and dec[3] else [f"accents {flags} {dec}"]
-        if name.startswith("AcidTie OFF :"):
+        if name.startswith("Tie OFF :"):
             extra += [] if all(r["v34"] for r in pr.recs[0] if r.get("v34_got")) else ["trig caché à l'OS"]
         if why or unm or pr.kinds() != kinds or extra or peak < 1 << 22:
             bad.append(name)
@@ -829,7 +829,7 @@ def articulation(fw, ref, label):
                   f"{unm[:2]}")
     check(not bad, f"{label}, articulation et Devil Fish (Mod Settings) : {len(todo)} séquences : sans "
                    "enregistrement, faux ou hors bornes = la 303 ; Slide OFF / 360 ms, Legato OFF (trigs vus de "
-                   "l'OS, glissement), Accent (vélocité >= 100, décroissance courte), Decay DF ; avant la chaîne "
+                   "l'OS, glissement), Accent (vélocité >= 110, décroissance courte), Decay DF ; avant la chaîne "
                    f"d'ampli, identique à la référence à chaque bloc {bad[:3]}")
     accent_sweep(ref)
 
@@ -837,7 +837,7 @@ def articulation(fw, ref, label):
 def accent_sweep(ref):
     """Le cœur seul (la référence) : l'accent sweep. La charge de C13 (acid_t.as) monte plus haut à chaque note
     accentuée de suite (elle ne se vide pas entre deux), redescend après une note sans accent ; la coupure en est
-    montée (sortie plus brillante) ; AcidAccnt réglé sans note accentuée = la 303 au bit près."""
+    montée (sortie plus brillante) ; Accent réglé sans note accentuée = la 303 au bit près."""
     t, k = ga.tables()
     def lines(accents, acc=t["ACID_ACC_T"][3], res=30000):
         out = []

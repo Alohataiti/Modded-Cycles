@@ -9,9 +9,10 @@ https://www.firstpr.com.au/rwi/dfish/303-unique.html. Adresses : VA de l'OS 1.13
 
 ## En bref
 
-- Quatre réglages de plus sur la page **Mod Settings** (SETTINGS › Mods, notes/72) : **AcidSlide**, **ACID
-  Legato**, **AcidAccnt**, **AcidDecay**. LEVEL/DATA pressé passe à la valeur suivante. Réglages 1..4 de
-  l'enregistrement MODS (`0x404e9b80`, octets 6..9), à côté de USB Audio (réglage 0).
+- Une ligne **ACID** sur la page **Mod Settings** (SETTINGS › Mods, notes/72) ouvre la page **ACID** : **Slide**,
+  **Tie**, **Accent**, **Decay**. LEVEL/DATA pressé passe à la valeur suivante. Réglages 1..4 de l'enregistrement
+  MODS (`0x404e9b80`, octets 6..9), à côté de USB Audio (réglage 0). La page ACID est une `MenuView` que la page Mod
+  Settings pousse comme le Config Menu pousse Mod Settings (`acid_open`, pointeur partagé `acid_h`).
 - La machine ACID les lit à chaque trig (`acid_set`, `tools/machines/acid/acid.c`). Valeur 0 de chacun (le défaut,
   et sans enregistrement valide ou sans Mod Settings) : ACID d'avant, **au bit près** (§4).
 - Globaux, pas par piste ni par pas : comme une Devil Fish, un seul appareil. Pas de p-lock, pas de destination de
@@ -30,10 +31,10 @@ retiré : notes/54).
 
 | Réglage | Valeurs (0 en gras) | Effet |
 |---|---|---|
-| AcidSlide | **303**, OFF, 60, 120, 180, 240, 360 | temps du glissement. 303 : `ACID_SLIDE_A`. OFF : la hauteur saute (coefficient 1). 60..360 : temps audible de la Devil Fish (p. 4), soit 2,64 τ (103,3 k × 0,22 µF = 22,7 ms pour 60 ms, p. 16) |
-| AcidTie | **ON**, OFF | OFF : un trig lié n'est plus caché à l'OS : l'ampli et le MEG repartent (trig `ACID_GLIDE` du cœur), seule la hauteur glisse depuis la note d'avant. Le glissement garde le temps d'AcidSlide |
-| AcidAccnt | **OFF**, LOW, MID, HIGH | une note dont le gain de vélocité (`0x40fe4cd0`) atteint 100 est accentuée : son MEG décroît en 200 ms (la plus courte de la 303, comme le circuit d'accent : 303-unique, « MEG »), et il charge l'accent sweep (§3). LOW, MID, HIGH : la montée de la coupure pour un MEG plein, 1, 2 ou 3 octaves |
-| AcidDecay | **303**, DF | DF : DECAY couvre 30 ms .. 3 s (Normal Decay de la Devil Fish, p. 4) au lieu de 200 ms .. 2 s (`ACID_DEC_DF`) |
+| Slide | **303**, OFF, 60, 120, 180, 240, 360 | temps du glissement. 303 : `ACID_SLIDE_A`. OFF : la hauteur saute (coefficient 1). 60..360 : temps audible de la Devil Fish (p. 4), soit 2,64 τ (103,3 k × 0,22 µF = 22,7 ms pour 60 ms, p. 16) |
+| Tie | **ON**, OFF | OFF : un trig lié n'est plus caché à l'OS : l'ampli et le MEG repartent (trig `ACID_GLIDE` du cœur), seule la hauteur glisse depuis la note d'avant. Le glissement garde le temps d'Slide |
+| Accent | **OFF**, LOW, MID, HIGH | une note dont le gain de vélocité (`0x40fe4cd0`) atteint 110 est accentuée : son MEG décroît en 200 ms (la plus courte de la 303, comme le circuit d'accent : 303-unique, « MEG »), et il charge l'accent sweep (§3). LOW, MID, HIGH : la montée de la coupure pour un MEG plein, 1, 2 ou 3 octaves |
+| Decay | **303**, DF | DF : DECAY couvre 30 ms .. 3 s (Normal Decay de la Devil Fish, p. 4) au lieu de 200 ms .. 2 s (`ACID_DEC_DF`) |
 
 - Un accent sur une note liée (slide) ne relance pas le MEG : il change sa vitesse de décroissance et charge
   l'accent sweep depuis le MEG en cours (comportement connu : « un slide accentué est surtout plus fort »).
@@ -49,7 +50,7 @@ curseur d'un potard de 100 k qui est la **2e section du potard de RESONANCE** : 
 directe (100/147 du MEG, moins la charge) ; en haut, la tension de C13, lissée, qui monte plus haut à chaque accent
 de suite parce qu'elle ne se vide pas entre deux.
 
-Dans le cœur (`acid_block`, une fois par bloc de 32 trames, seulement si AcidAccnt n'est pas OFF) :
+Dans le cœur (`acid_block`, une fois par bloc de 32 trames, seulement si Accent n'est pas OFF) :
 
 ```
 e = note accentuée ? MEG : 0
@@ -74,16 +75,17 @@ Mesuré sur la référence (test_acid, `accent_sweep`) : crêtes de la charge su
   `TGG` au lieu de `TSS`) seul et avec Slide 240 ms ; Accent HIGH sur 127 × 3 puis 64 (accents `1 1 1 0`,
   décroissance courte) ; Accent LOW sur un slide accentué ; Decay DF ; tout à la fois.
 - Place : code et tables d'ACID 6 704 o (6 068 avant), variables 912 o (744) ; Mod Settings : trois masques 46 × 31
-  de plus (`0x40170ad8`, `0x40171bc8`, `0x401728f8`, libres sur la chaîne complète des PR au 31/10/2026) pour les
-  lignes ACID ; `check_overlaps.py` sans conflit.
+  de plus (`0x40170ad8`, `0x40171bc8`, `0x401728f8`, `0x40184988`) et un 35 × 35 (`0x40167c50`), libres sur la chaîne
+  complète des PR au 31/10/2026, pour la page ACID ; `check_overlaps.py` sans conflit.
 
 ## 5. À essayer sur la machine
 
-- Page Mod Settings : cinq lignes, « n/5 », valeurs lisibles (HIGH, 360) ; le réglage revient après extinction.
-- AcidSlide 360 sur LEN 1.06 ; OFF ; AcidTie OFF (chaque note attaque, la hauteur glisse).
-- AcidAccnt HIGH, RESO haut, vélocités 127 sur trois pas de suite : la montée « wow » qui grandit ; RESO bas :
+- Mod Settings › ACID : quatre lignes, « n/4 », valeurs lisibles (HIGH, 360) ; retour en arrière ; le réglage revient
+  après extinction.
+- Slide 360 sur LEN 1.06 ; OFF ; Tie OFF (chaque note attaque, la hauteur glisse).
+- Accent HIGH, RESO haut, vélocités 127 sur trois pas de suite : la montée « wow » qui grandit ; RESO bas :
   un claquement court.
-- AcidDecay DF, DECAY au minimum : un « tic » de filtre de 30 ms.
+- Decay DF, DECAY au minimum : un « tic » de filtre de 30 ms.
 - Charge du processeur avec six pistes ACID, Accent HIGH.
 
 ## 6. Hors de cette version
