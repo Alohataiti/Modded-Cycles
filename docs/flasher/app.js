@@ -27,7 +27,7 @@ const ELEKTRON_ST_DL = "https://www.elektron.se/support-downloads/syntakt";
 // same whole write or a mod applied on top of another through "requires").
 const REF_MAINOS = {
   // Modded Cycles OS 2.0: the tweaks of os.json, built by tools/build.py --os
-  "model-tg-st+sample-preview-st+trig-hold+arp+step-rec+tempo-max+boot-anim+multiline-browser+level-pan-values+trigless-dim+midi-live-both+mod-settings+lfo-plus+tempo-sync+syntakt-tg-sd-cp-toy-bits-swarm-macro-acid-retrosyn": "72c2527fff9cbf1678d4eafb7ceaabe2fba1ae0107d7b468db609d948995ba25",
+  "model-tg-st+sample-preview-st+trig-hold+arp+step-rec+tempo-max+boot-anim+multiline-browser+level-pan-values+trigless-dim+midi-live-both+mod-settings+lfo-plus+tempo-sync+syntakt-tg-sd-cp-toy-bits-swarm-macro-acid-retrosyn": "e8ca1d5c39cfae72edf7a570ddeb3140111eaf5344f64d508b8f6fe8fce29f2a",
 };
 const REF_MODS = {
   "model-tg-st": {"w": "673c80de31dde21584cd59204819cef314fb3187f80a37298853b37652204eba", "p": "a1930c35a3208e603e076b34ceee1c0441d2ae896551fb0042cf69e3ff1bcc18"},
@@ -41,10 +41,10 @@ const REF_MODS = {
   "level-pan-values": {"w": "50e0c4e6e5cb3c6de19296d2f65fec5074ea8e25322363d6bc1dad164cb131b9"},
   "trigless-dim": {"w": "4efc73f035aab33963e8ae8f3f6343925e2cd5149b4cad6780051d0c185e32e1"},
   "midi-live-both": {"w": "e7dfae924d6474abea22b375002ff58b1e3cde301aa9ca8a2ec980593316c942"},
-  "mod-settings": {"w": "c3c023276e80295a9338a80d22711469620d4b4315ae2b1e0a85c9a61e31e9bb"},
+  "mod-settings": {"w": "126c3752b9b570b24fefed728b8921d8afc1832a8407d993ec0944ed96d8b492"},
   "lfo-plus": {"w": "6f62dfc53c2cc41d321b7b179ce9aa5a5b7f2543dd3c4387b255f27a1b26b3e5"},
   "tempo-sync": {"w": "f11402e3818b2b5ce34d8d154e17f990bb3f4913be70e0fb8650a00ef530216f"},
-  "syntakt-tg-sd-cp-toy-bits-swarm-macro-acid-retrosyn": {"w": "fc873c3262e61b3aa6f84dea4f2d4a7257c83d635c8a4483097a4966a6fba42a", "p": "a0ab8548106a77edbe435a66c482f8813ed35c13515dce7efa7001dcbbd4c481"},
+  "syntakt-tg-sd-cp-toy-bits-swarm-macro-acid-retrosyn": {"w": "fc873c3262e61b3aa6f84dea4f2d4a7257c83d635c8a4483097a4966a6fba42a", "p": "35781b43ecd76b6fe4e310b64ec44ed49df3d57a56e7046d6fedd2417c443c75"},
 };
 
 // "Samples OS" tab: official Model:Samples OS 1.13 inside the official Model:Cycles container
