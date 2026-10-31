@@ -11,7 +11,13 @@
  * mode is set up (usb_boot, mods_hooks.S), or when the setting changes, with the USB stopped as for a change of USB
  * mode (0x40004e04). The bytes they replace are kept first and put back for 2CH. In 2CH nothing of this code runs
  * after start-up: the driver is the OS's own, byte for byte.
+ *
+ * ACID (notes/88): four more lines, AcidSlide, AcidTie, AcidAccnt and AcidDecay, settings 1..4 of the record,
+ * read by the ACID machine at each trig (tools/machines/acid/acid.c). LEVEL/DATA pressed steps to the next value;
+ * 0, the default, is the machine as before.
  */
+
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef int s32;
@@ -56,7 +62,7 @@ void cache_sync(void);
 #define REC     ((volatile u8 *)0x404e9b80)
 #define MAGIC   0x4d4f4453                    /* "MODS" */
 enum { R_VER = 4, R_SET = 5, R_N = 10, R_CHK = 15, VERSION = 1 };
-enum { S_USB6 = 0 };
+enum { S_USB6 = 0, S_ACID = 1 };
 
 static u8 rec_sum(void)
 {
@@ -164,6 +170,50 @@ static void usb6_set(u32 on)
 	USB_RESTART();
 }
 
+/* --- ACID (notes/88) --- */
+struct acid_row {
+	const char *name;
+	u32 k, n;                                 /* setting, number of values */
+	const char *const *val;
+};
+
+static const char *const V_SLIDE[] = { "303", "OFF", "60", "120", "180", "240", "360" };
+static const char *const V_LEGATO[] = { "ON", "OFF" };
+static const char *const V_ACCENT[] = { "OFF", "LOW", "MID", "HIGH" };
+static const char *const V_DECAY[] = { "303", "DF" };
+static const struct acid_row ACID_ROWS[4] = {
+	{ "AcidSlide", S_ACID + 0, 7, V_SLIDE },
+	{ "AcidTie", S_ACID + 1, 2, V_LEGATO },
+	{ "AcidAccnt", S_ACID + 2, 4, V_ACCENT },
+	{ "AcidDecay", S_ACID + 3, 2, V_DECAY },
+};
+static u8 *acid_page;                         /* the Mod Settings page, for the redraw */
+
+static u32 acid_value(const struct acid_row *r)
+{
+	u32 x = mods_get(r->k);
+
+	return x < r->n ? x : 0;
+}
+
+/* Lines ACID …: LEVEL/DATA pressed steps to the next value, the last one back to the first. */
+void acid_press(void **st)
+{
+	const struct acid_row *r = *(const struct acid_row **)*st;
+	u32 x = acid_value(r) + 1;
+
+	mods_put(r->k, x < r->n ? x : 0);
+	VIEW_REDRAW(acid_page + 56);
+}
+
+void acid_draw(void **st, u32 a, void *canvas, s32 x, s32 y)
+{
+	const struct acid_row *r = *(const struct acid_row **)*st;
+
+	(void)a;
+	VALUE_TEXT(canvas, 0x401429ec, x, y - 12, 1, 0, (const char *)0x401301e6, r->val[acid_value(r)]);
+}
+
 /* --- menus --- */
 static u8 icon_bm[28];                        /* Bitmap: the icon of the Mods line and of the page */
 static u32 page_h[2];                         /* shared pointer to the page, as the Config Menu's own (+600..) */
@@ -226,6 +276,7 @@ void mods_menu_add(void *cfg)
 {
 	static void *const USB_INV[3] = { item_label, usb_press, usb_draw };
 	static void *const MODS_INV[3] = { item_label, mods_open, item_icon };
+	static void *const ACID_INV[3] = { item_label, acid_press, acid_draw };
 
 	if (!page_h[0]) {
 		u8 *page = NEW(0x23c);
@@ -241,6 +292,16 @@ void mods_menu_add(void *cfg)
 		clo[1] = (u32)page;
 		clo[2] = 0;
 		add_item(page, USB_INV, clo);
+		acid_page = page;
+		{
+			u32 i;
+
+			for (i = 0; i < 4; i++) {
+				clo[0] = (u32)ACID_ROWS[i].name;
+				clo[1] = clo[2] = (u32)&ACID_ROWS[i];
+				add_item(page, ACID_INV, clo);
+			}
+		}
 		make_handle(page_h, cfg, page + 56);
 	}
 	{
