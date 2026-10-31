@@ -6,8 +6,8 @@ Adresses : VA de l'OS 1.13 (la section 3 commence en `0x40000400`). Un mod qui v
 
 ## En bref
 
-- 285 tweaks, 32 063 écritures.
-- Masques de sprites libérables : 164 (35 960 o), dont 91 pris (26 096 o) et **73 libres (9 864 o)**.
+- 285 tweaks, 32 067 écritures.
+- Masques de sprites libérables : 164 (35 960 o), dont 93 pris (26 560 o) et **71 libres (9 400 o)**.
 - Crochets sur l'OS : 123 adresses détournées, dont 62 à l'identique par des mods de familles différentes.
 - Pointeurs réécrits : 58 adresses. Écritures dans des octets 0xFF hors masques : 15 zones.
 - Charges utiles ajoutées après l'OS : 263 tweaks ; place restante au §3.
@@ -22,7 +22,7 @@ Les masques d'un groupe sont identiques octet pour octet et chacun n'est désign
 |---|---|---|---|
 | `0x4016b6f8` | `0x400b133e` | pris (348/376 o) | mod-settings (348 o) |
 | `0x4016b9e8` | `0x400b131c` | pris (296/376 o) | mod-settings (296 o) |
-| `0x40171f30` | `0x400b05a0` | pris (364/376 o) | mod-settings (364 o) |
+| `0x40171f30` | `0x400b05a0` | pris (316/376 o) | mod-settings (316 o) |
 | `0x40172608` | `0x400b0544` | pris (268/376 o) | mod-settings (268 o) |
 | `0x40179730` | `0x400af64a` | pris (204/376 o) | mod-settings (204 o) |
 | `0x40182b38` | `0x400adfda` | pris (370/376 o) | step-rec (370 o) |
@@ -76,7 +76,7 @@ Les masques d'un groupe sont identiques octet pour octet et chacun n'est désign
 | `0x40184c78` | `0x400adbe4` | pris (112/192 o) | tempo-sync (112 o) |
 | `0x40187528` | `0x400ad742` | pris (190/192 o) | mod-settings (190 o) |
 | `0x401876a8` | `0x400ad726` | pris (161/192 o) | mod-settings (161 o) |
-| `0x40188f98` | `0x400ad3a0` | pris (108/192 o) | mod-settings (108 o) |
+| `0x40188f98` | `0x400ad3a0` | pris (104/192 o) | mod-settings (104 o) |
 | `0x4018a608` | `0x400ad1c6` | pris (166/192 o) | step-rec (166 o) |
 | `0x4018b9c8` | `0x400ad048` | pris (114/192 o) | tempo-sync (114 o) |
 | `0x4018bb48` | `0x400ad028` | pris (117/192 o) | tempo-sync (117 o) |
@@ -89,7 +89,7 @@ Les masques d'un groupe sont identiques octet pour octet et chacun n'est désign
 | `0x4019089c` | `0x400ac748` | pris (168/192 o) | tempo-sync (168 o) |
 | `0x40192a24` | `0x400ac292` | pris (177/192 o) | tempo-sync (177 o) |
 
-### 35×35 : 19 masques de 280 o (copie gardée `0x4014a660`) : 15 pris, 4 libres (1 120 o)
+### 35×35 : 19 masques de 280 o (copie gardée `0x4014a660`) : 16 pris, 3 libres (840 o)
 
 | masque | constante | état | mods (octets écrits) |
 |---|---|---|---|
@@ -108,7 +108,7 @@ Les masques d'un groupe sont identiques octet pour octet et chacun n'est désign
 | `0x40163fb8` | `0x400b34c8` | pris (147/280 o) | track-filter (147 o) |
 | `0x4016616c` | `0x400b2898` | pris (164/280 o) | track-filter (164 o) |
 | `0x40166760` | `0x400b272e` | pris (208/280 o) | track-filter (208 o) |
-| `0x40167c50` | `0x400b211e` | libre | |
+| `0x40167c50` | `0x400b211e` | pris (276/280 o) | mod-settings (276 o) |
 | `0x401696a0` | `0x400b1540` | libre | |
 | `0x401699a8` | `0x400b1500` | libre | |
 | `0x4016aa28` | `0x400b1480` | libre | |
@@ -203,15 +203,15 @@ Les masques d'un groupe sont identiques octet pour octet et chacun n'est désign
 | `0x40179c98` | `0x400af5f2` | libre | |
 | `0x40186168` | `0x400ad9a4` | libre | |
 
-### 46×31 : 7 masques de 184 o (copie gardée `0x4016be58`) : 3 pris, 4 libres (736 o)
+### 46×31 : 7 masques de 184 o (copie gardée `0x4016be58`) : 4 pris, 3 libres (552 o)
 
 | masque | constante | état | mods (octets écrits) |
 |---|---|---|---|
 | `0x40170ad8` | `0x400b08f6` | pris (176/184 o) | mod-settings (176 o) |
-| `0x40171bc8` | `0x400b06d0` | pris (136/184 o) | mod-settings (136 o) |
-| `0x401728f8` | `0x400b0528` | pris (136/184 o) | mod-settings (136 o) |
+| `0x40171bc8` | `0x400b06d0` | pris (148/184 o) | mod-settings (148 o) |
+| `0x401728f8` | `0x400b0528` | pris (135/184 o) | mod-settings (135 o) |
 | `0x40179140` | `0x400af6c2` | libre | |
-| `0x40184988` | `0x400adc20` | libre | |
+| `0x40184988` | `0x400adc20` | pris (76/184 o) | mod-settings (76 o) |
 | `0x40185648` | `0x400ada58` | libre | |
 | `0x401857f8` | `0x400ada1c` | libre | |
 
@@ -767,7 +767,7 @@ Nombre d'écritures de chaque sorte (une plage pour une famille de moteurs).
 | browser-scroll | 5 | 1 | 0 | 0 | 0 | 0 | 4 |  |  |
 | 6ch-multiout | 29 | 25 | 4 | 0 | 0 | 0 | 0 |  |  |
 | 6ch-usbup | 25 | 12 | 7 | 0 | 5 | 1 | 0 |  | notes/36 |
-| mod-settings | 34 | 1 | 5 | 0 | 16 | 12 | 0 |  | notes/88 |
+| mod-settings | 38 | 1 | 5 | 0 | 18 | 14 | 0 |  | notes/88 |
 | sdvintage-snare | 10 | 4 | 0 | 2 | 2 | 2 | 0 |  | notes/16 |
 | sdvintage-exact | 9 | 4 | 1 | 2 | 1 | 1 | 0 | 205 200 o | notes/17 |
 | sdvintage-7th | 116 | 58 | 9 | 47 | 1 | 1 | 0 | 218 208 o | notes/18 |
