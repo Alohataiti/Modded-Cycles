@@ -44,6 +44,9 @@ CAVES = {
     ".cave_f": (0x401876a8, 192),
     ".cave_g": (0x40188f98, 192),
     ".cave_h": (0x40179730, 376),
+    ".cave_i": (0x40170ad8, 184),     # 46x31 masks: the ACID lines (notes/88)
+    ".cave_j": (0x40171bc8, 184),
+    ".cave_k": (0x401728f8, 184),
 }
 # (address, stock bytes, symbol, opcode, role)
 HOOKS = (
@@ -73,7 +76,7 @@ RUNTIME = {
 CONFLICTS = ["6ch-multiout", "6ch-usbup"]            # they write the RUNTIME bytes for good
 SYMBOLS = ("cfg_tail", "usb_boot", "mods_get", "usb_press", "mods_open", "cache_push", "cache_sync", "saved", "usb6_on",
            "page_h",
-           "icon_bm", "ICON_MODS")                                  # for tools/emu/test_mod_settings.py
+           "icon_bm", "ICON_MODS", "acid_press", "acid_draw", "ACID_ROWS")  # for tools/emu/test_mod_settings.py
 REC = 0x404e9b80                                      # the settings record (mods.c)
 ICON = """
 ...............................
@@ -206,7 +209,8 @@ def build_tweak(stock):
             "le pilote est celui de l'OS, octet pour octet. Les stubs de 6ch-usbup et sa correction du flux USB stéréo",
             "(partagée avec Model-TG, notes/35) sont écrits tels quels.",
             f"Code dans huit masques de sprites libérés (tools/sprites.py) : {total} o. Généré par tools/gen_mod_settings.py,",
-            "notes/72.",
+            "notes/72. Quatre lignes de plus pour la machine ACID (notes/88) : AcidSlide, AcidTie, AcidAccnt,",
+            "AcidDecay, réglages 1..4 de l'enregistrement, lus par ACID à chaque trig.",
         ],
         "device": "Model:Cycles",
         "os": "1.13",
