@@ -15,7 +15,13 @@ SECTIONS
     *(.text.acid_press) *(.text.acid_draw)
   }
   .cave_j 0x40171bc8 : {
-    *(.rodata.ACID_ROWS) *(.rodata.V_*) *(.rodata.ACID_INV*)
+    *(.rodata.ACID_ROWS) *(.rodata.V_*) *(.rodata.ACID_INV*) *(.rodata.OPEN_INV*)
+  }
+  .cave_l 0x40167c50 : {                              /* the ACID page (a 35x35 mask, 280 bytes) */
+    *(.text.acid_menu_add)
+  }
+  .cave_m 0x40184988 : {
+    *(.text.acid_open) . = ALIGN(4); *(.bss.acid_h) *(.bss.acid_page)
   }
   .cave_k 0x401728f8 : {                              /* the strings (m68k-elf-gcc: one .rodata) */
     *(.rodata) *(.rodata.str1.1) *(.rodata.mods_menu_add*)

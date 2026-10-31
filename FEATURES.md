@@ -100,7 +100,8 @@ retrig page, menus) are listed with that page as context.
 | **LEVEL/DATA** (press, without FUNC) | Switches OUT/THRU to OUT, as stock; back on THR, forwarding only | Live MIDI OUT + THRU toggle | OUT/THRU row |
 | **LEVEL/DATA** (press) on **Mods** | Opens Mod Settings, the page of the mods' own settings | Mod Settings | SETTINGS menu, last line (after Device) |
 | **LEVEL/DATA** (press) on **USB Audio** | Switches between 2CH (the stereo mix, as stock) and 6CH (each track on its own channel); the Model:Cycles leaves the computer and comes back about a second later | Mod Settings: USB audio | SETTINGS › Mods |
-| **LEVEL/DATA** (press) on **AcidSlide / AcidTie / AcidAccnt / AcidDecay** | Steps to the next value (slide time, legato, accent sweep, Devil Fish decay range) | ACID machine (notes/88) | SETTINGS › Mods |
+| **LEVEL/DATA** (press) on **ACID** | Opens the ACID page: Slide, Tie, Accent, Decay | ACID machine (notes/88) | SETTINGS › Mods |
+| **LEVEL/DATA** (press) on **Slide / Tie / Accent / Decay** | Steps to the next value (slide time, legato, accent sweep, Devil Fish decay range) | ACID machine (notes/88) | SETTINGS › Mods › ACID |
 | **MACHINES** held + **DECAY** | Attack (instant to about 2 s) | Model-TG | Every machine, including the Syntakt engines |
 | **MACHINES** held + **SWEEP** | Filter (Model-TG's ladder low-pass) | Model-TG | Every machine. Same gesture as the per-track filter, which is why that mod is outside OS 2.0 |
 | **MACHINES** held + **CONTOUR** | Resonance | Model-TG | Same note as above |
@@ -342,15 +343,16 @@ in fixed point. Slides come from trig lengths.
   notes/54 §2: Model-TG's slide trigs "glide the parameters, not the note".
 - Set ACID tracks back to an original machine before flashing anything else.
 
-**Articulation and Devil Fish** (experimental, notes/88). Four settings on the **Mod Settings** page (SETTINGS ›
-Mods), for every ACID track at once, as on a single Devil Fish unit. Their first value is ACID as above, bit for bit.
+**Articulation and Devil Fish** (experimental, notes/88). Four settings on the **ACID** page of Mod Settings
+(SETTINGS › Mods › ACID), for every ACID track at once, as on a single Devil Fish unit. Their first value is ACID as
+above, bit for bit.
 
 | Setting | Values | What it does |
 |---|---|---|
-| AcidSlide | **303**, OFF, 60, 120, 180, 240, 360 | the slide time in ms: 303 is the stock one (about 60 ms), OFF jumps to the note, 60 .. 360 is the Devil Fish's range |
-| AcidTie | **ON**, OFF | OFF: a tied trig (LEN past the next trig) plays again (amp and filter envelope restart) but its pitch still glides from the previous note |
-| AcidAccnt | **OFF**, LOW, MID, HIGH | a note with velocity 100 or more is accented: its filter envelope decays in 200 ms, as on a 303, and charges the accent sweep, which raises the cutoff and builds up over accents in a row ("wow"); RESO decides how much: low gives a short pulse, high the slow build-up |
-| AcidDecay | **303**, DF | DF: DECAY covers 30 ms .. 3 s (the Devil Fish's Normal Decay) instead of 0.2 .. 2 s |
+| Slide | **303**, OFF, 60, 120, 180, 240, 360 | the slide time in ms: 303 is the stock one (about 60 ms), OFF jumps to the note, 60 .. 360 is the Devil Fish's range |
+| Tie | **ON**, OFF | OFF: a tied trig (LEN past the next trig) plays again (amp and filter envelope restart) but its pitch still glides from the previous note |
+| Accent | **OFF**, LOW, MID, HIGH | a note with velocity 110 or more is accented: its filter envelope decays in 200 ms, as on a 303, and charges the accent sweep, which raises the cutoff and builds up over accents in a row ("wow"); RESO decides how much: low gives a short pulse, high the slow build-up |
+| Decay | **303**, DF | DF: DECAY covers 30 ms .. 3 s (the Devil Fish's Normal Decay) instead of 0.2 .. 2 s |
 
 A setting is read at each trig: a change is heard from the next note. Without Mod Settings in the firmware, ACID
 keeps its first values.
@@ -653,7 +655,7 @@ enough and did not test it himself (notes/53 §9). Marked tested on 11/10/2026.
 
 **What it does.** The SETTINGS menu (the Config Menu) gets a ninth line, **Mods**, after Device. It opens **Mod
 Settings**, a page meant for the mods' own settings. Its first setting, **USB Audio**, chooses what goes to the
-computer over USB (the four ACID settings that follow are described with the ACID machine, 2.4):
+computer over USB. The line **ACID** opens the ACID machine's page (described with the machine, 2.4):
 
 - **2CH**, the default: the stereo mix, exactly as the stock OS sends it (the 6-channel code is not even in place).
 - **6CH**: each track on its own USB channel (48 kHz, 32-bit, 6 inputs): six mono stems, taken before the pan, without

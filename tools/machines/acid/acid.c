@@ -31,10 +31,10 @@
  *
  * Articulation et Devil Fish (notes/88) : quatre reglages de Mod Settings (notes/72), lus a chaque trig dans
  * l'enregistrement MODS (0x404e9b80, octets 6..9 ; sans enregistrement valide, ou sans Mod Settings : tous a 0, le
- * comportement d'avant). AcidSlide : temps du glissement (303, OFF, 60..360 ms). AcidTie OFF : un trig lie
+ * comportement d'avant). Slide : temps du glissement (303, OFF, 60..360 ms). Tie OFF : un trig lie
  * n'est plus cache a l'OS (l'ampli et le MEG repartent), seule la hauteur glisse depuis la note d'avant. ACID
  * Accent : une note dont le gain de velocite atteint ACID_ACC_VEL est accentuee : son MEG remplit l'accent sweep, et
- * sa decroissance est la plus courte de la 303 (200 ms), comme le circuit d'accent. AcidDecay DF : DECAY couvre
+ * sa decroissance est la plus courte de la 303 (200 ms), comme le circuit d'accent. Decay DF : DECAY couvre
  * 30 ms .. 3 s au lieu de 200 ms .. 2 s.
  *
  * GOV_SKIP (avec les moteurs du Syntakt, notes/54 par. 11) : leur regulateur de charge cesse d'appeler update et
@@ -80,8 +80,8 @@ struct track {
 	s32 mach;                                        /* MACHINE (p+0x12) qui a choisi ACID sur cette voix */
 	s32 gain;                                        /* gain de velocite vise apres un slide ; ramp : en route */
 	s32 ramp;
-	s32 glide;                                       /* trig lie, AcidTie OFF : au bloc suivant, ACID_GLIDE */
-	s32 cfg_dec;                                     /* AcidDecay DF */
+	s32 glide;                                       /* trig lie, Tie OFF : au bloc suivant, ACID_GLIDE */
+	s32 cfg_dec;                                     /* Decay DF */
 #ifdef GOV_SKIP
 	u32 seen;                                        /* minuteur au dernier appel */
 #endif
@@ -176,7 +176,7 @@ void acid_update(s32 pmod, char *v, const char *p)
 		slide = tr->held && !tr->idle && (left == 0 || left > 2 * LEN_STEP) && (s8)p[0x12] == tr->mach;
 		tr->held = 1;
 		tr->ramp = 0;
-		tr->glide = slide && cfg[1];             /* AcidTie OFF : le trig reste a l'OS, la hauteur glisse */
+		tr->glide = slide && cfg[1];             /* Tie OFF : le trig reste a l'OS, la hauteur glisse */
 		if (tr->glide)
 			slide = 0;
 		if (slide) {

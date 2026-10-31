@@ -27,7 +27,7 @@ const ELEKTRON_ST_DL = "https://www.elektron.se/support-downloads/syntakt";
 // same whole write or a mod applied on top of another through "requires").
 const REF_MAINOS = {
   // Modded Cycles OS 2.0: the tweaks of os.json, built by tools/build.py --os
-  "model-tg-st+sample-preview-st+trig-hold+arp+step-rec+tempo-max+boot-anim+multiline-browser+level-pan-values+trigless-dim+midi-live-both+mod-settings+lfo-plus+syntakt-tg-sd-cp-toy-bits-swarm-macro-acid": "83c710bcd50200558baf641074dc1e53a3053425b0e346ab2e39fefda913c9ca",
+  "model-tg-st+sample-preview-st+trig-hold+arp+step-rec+tempo-max+boot-anim+multiline-browser+level-pan-values+trigless-dim+midi-live-both+mod-settings+lfo-plus+syntakt-tg-sd-cp-toy-bits-swarm-macro-acid": "ea9084f31892b7c6d5238470a4363a48d7bfec6b4cb776ae81ce5c200b062944",
 };
 const REF_MODS = {
   "model-tg-st": {"w": "75bc6da1d7f9ae81c0de172fa6e21bf741913f060a66e02abb2d455b868dd584", "p": "8518c46885d394ee50cb8cdeb029488547383613bf69c12b5657354274a889cd"},
@@ -41,9 +41,9 @@ const REF_MODS = {
   "level-pan-values": {"w": "50e0c4e6e5cb3c6de19296d2f65fec5074ea8e25322363d6bc1dad164cb131b9"},
   "trigless-dim": {"w": "4efc73f035aab33963e8ae8f3f6343925e2cd5149b4cad6780051d0c185e32e1"},
   "midi-live-both": {"w": "e7dfae924d6474abea22b375002ff58b1e3cde301aa9ca8a2ec980593316c942"},
-  "mod-settings": {"w": "126c3752b9b570b24fefed728b8921d8afc1832a8407d993ec0944ed96d8b492"},
+  "mod-settings": {"w": "35b309c1d264f77e3b123fc54b9041a503db604e4c2b131903a6a063c1cfce45"},
   "lfo-plus": {"w": "ae842a61cd45060a687535fead643c053bea30072ad06c6743853e463df67f7d"},
-  "syntakt-tg-sd-cp-toy-bits-swarm-macro-acid": {"w": "e2f7ed8609ce6c3b877dfd1ee419e497b131a6e582445f390d95b3f1215a0789", "p": "c26a6a0b2c8cee48af2459d75aa2a777c070b106157e006b2f648cf3e4a4764c"},
+  "syntakt-tg-sd-cp-toy-bits-swarm-macro-acid": {"w": "e2f7ed8609ce6c3b877dfd1ee419e497b131a6e582445f390d95b3f1215a0789", "p": "c9009b837330fe58faf2c759f78856159f48500e50f0947ddfaa9244ebdd41aa"},
 };
 
 // "Samples OS" tab: official Model:Samples OS 1.13 inside the official Model:Cycles container

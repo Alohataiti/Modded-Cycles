@@ -276,7 +276,7 @@ def menu_tests(img, os_img_without, ms, png):
     shots.append(u.draw(page))
     title = u.cstr(u.u32(page + 148)), u.cstr(u.u32(page + 556))
     values = [u.cstr(a[7]) for name, a in u.trace if name == "value"]
-    check(plabels == ["USB Audio"] + [n for n, _ in ACID_LINES] and values == ["2CH"] and title == ("Mod", "Settings"),
+    check(plabels == ["USB Audio", "ACID"] and values == ["2CH"] and title == ("Mod", "Settings"),
           f"page {' '.join(title)}: lines {plabels}, value {values}")
     pushed = []
     u.hooks[0x40075754] = lambda a: pushed.append((a[0], u.u32(a[1]), u.u32(a[1] + 4)))
@@ -292,16 +292,32 @@ def menu_tests(img, os_img_without, ms, png):
     return u, cfg, page, shots
 
 
-ACID_LINES = (("AcidSlide", ("303", "OFF", "60", "120", "180", "240", "360")), ("AcidTie", ("ON", "OFF")),
-              ("AcidAccnt", ("OFF", "LOW", "MID", "HIGH")), ("AcidDecay", ("303", "DF")))
+ACID_LINES = (("Slide", ("303", "OFF", "60", "120", "180", "240", "360")), ("Tie", ("ON", "OFF")),
+              ("Accent", ("OFF", "LOW", "MID", "HIGH")), ("Decay", ("303", "DF")))
 
 
 def acid_tests(u, page, ms, shots):
     """The four ACID lines (notes/88): LEVEL/DATA pressed steps through the values and back to the first, each
     saved in the record (setting 1..4, check byte) as USB Audio's; the display draws the value; the USB is not
     touched."""
-    print("4a. ACID lines (LEVEL/DATA pressed on ACID Slide, Legato, Accent, Decay)")
+    print("4a. ACID page (Mod Settings › ACID: Slide, Tie, Accent, Decay)")
     s = {k: int(v, 16) for k, v in ms["symbols"].items()}
+    apage = u.u32(s["acid_h"]) - 56
+    alabels = [u.label(i) for i in u.items(apage)]
+    atitle = u.cstr(u.u32(apage + 148))
+    pushed = []
+    u.hooks[0x40075754] = lambda a: pushed.append((a[0], u.u32(a[1]), u.u32(a[1] + 4)))
+    ctrl = u.u32(s["acid_h"] + 4)
+    uses = u.u32(ctrl + 4)
+    st0, clo0 = u.alloc(16), u.alloc(4)
+    u.w32(clo0, page)
+    u.w32(st0, clo0)
+    u.call(s["acid_open"], st0)
+    del u.hooks[0x40075754]
+    check(alabels == [n for n, _ in ACID_LINES] and atitle == "ACID" and pushed == [(page, apage + 56, ctrl)]
+          and u.u32(ctrl + 4) == uses,
+          f"page {atitle}: lines {alabels}; ACID pressed on Mod Settings pushes it ({apage + 56:#x}), the copy of "
+          f"the shared pointer released (use count {uses})")
     log = []
     u.hooks[0x400449b8] = lambda a: log.append("save")
     u.hooks[0x40004d9a] = lambda a: log.append("stop")
@@ -327,9 +343,10 @@ def acid_tests(u, page, ms, shots):
         rec = bytes(u.uc.mem_read(REC, 16))
         if seen != list(vals) + [vals[0]] or rec[6 + i] != 1 % len(vals):
             bad.append(f"{name}: {seen}, setting {rec[6 + i]}")
-    u.move(page, 2)
+    u.move(page, 1)
     shots.append(u.draw(page))
-    u.move(page, -2)
+    u.move(page, -1)
+    shots.append(u.draw(apage))
     check(not bad and not u.bad, f"ACID lines: each press steps to the next value and back to the first "
                                  f"({', '.join(f'{n} {len(v)}' for n, v in ACID_LINES)}), saved in the record with its "
                                  f"check byte, USB untouched {bad[:2]}")
