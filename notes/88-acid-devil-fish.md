@@ -80,6 +80,11 @@ Mesuré sur la référence (test_acid, `accent_sweep`) : crêtes de la charge su
 
 ## 5. À essayer sur la machine
 
+Rapport d'un utilisateur (Model:Cycles, 01/11/2026), firmware de test `os-lofi-df2` (cette branche sur la chaîne
+lo-fi) : page Mod Settings › ACID, Slide, Tie, Accent et Decay essayés, « tout fonctionne ». La liste ci-dessous
+reste à couvrir pour un essai complet.
+
+
 - Mod Settings › ACID : quatre lignes, « n/4 », valeurs lisibles (HIGH, 360) ; retour en arrière ; le réglage revient
   après extinction.
 - Slide 360 sur LEN 1.06 ; OFF ; Tie OFF (chaque note attaque, la hauteur glisse).
