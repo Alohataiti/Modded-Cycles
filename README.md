@@ -95,17 +95,17 @@ Developers can still build any of these from the command line (see [BUILD.md](BU
 None of this is in the OS 2.0 yet. Every row is an open pull request from this fork to `18nelli18/Modded-Cycles`,
 with its branch and its user-facing docs in the same PR. All of them are **experimental**: the hardware results
 quoted below are reports from a user (*Rapport d'un utilisateur*), not Maxime's own test, and nothing here is marked
-*tested*. State as of 1 November 2026.
+*tested*. State as of 10 November 2026.
 
 | What you get on the machine | PR | Branch | State |
 |---|---|---|---|
-| **FUNC + SETTINGS** held gives back the stock save-pattern prompt (a Model-TG patch) | [#113](https://github.com/18nelli18/Modded-Cycles/pull/113) | `tg-func-keys` | Draft. User's report, 26/10/2026. Base of #127 and #129 |
+| **FUNC + SETTINGS** held gives back the stock save-pattern prompt (a Model-TG patch) | [#113](https://github.com/18nelli18/Modded-Cycles/pull/113) | `tg-func-keys` | Ready for review. User's report, 26/10/2026. Base of #127 and #129 |
 | **“Res” instead of “Resonance”** on the track popup plate | [#117](https://github.com/18nelli18/Modded-Cycles/pull/117) | `res-short-name` | Ready for review. Contained in #120 |
 | **Multi-line browser**: distinct names at the +Drive root, no duplicate LOCKS | [#118](https://github.com/18nelli18/Modded-Cycles/pull/118) | `browser-locks` | Ready for review |
 | **Attack, Filter and Res popups**: whole numbers, five dots, an animated curve | [#119](https://github.com/18nelli18/Modded-Cycles/pull/119) | `popup-ui` | Ready for review. Contained in #120 |
 | **Per-track Filter and Resonance** in the Sampler's Granular, Stretch, Pluck and Wave modes | [#120](https://github.com/18nelli18/Modded-Cycles/pull/120) | `sampler-mode-filter` | Ready for review. Contains #117 and #119 |
 | **MACRO's own lo-fi** under MACHINES + PITCH, with its popup; FUNC + PITCH restores the stock behaviour | [#121](https://github.com/18nelli18/Modded-Cycles/pull/121) | `lo-fi-machines` | Ready for review. Its MACRO lo-fi gives way to #128's track lo-fi |
-| **Resonance without the level drop**: full makeup and a soft clip | [#124](https://github.com/18nelli18/Modded-Cycles/pull/124) | `res-makeup` | Draft |
+| **Resonance without the level drop**: full makeup and a soft clip | [#124](https://github.com/18nelli18/Modded-Cycles/pull/124) | `res-makeup` | Ready for review |
 | **RETROSYN**, the 15th machine: chiptune voices from the AveyCole fork | [#123](https://github.com/18nelli18/Modded-Cycles/pull/123) | `retrosyn-core` | Ready for review |
 | **Delay time and LFO speed in note values of the tempo**: SETTINGS + the knob switches to SYNC | [#126](https://github.com/18nelli18/Modded-Cycles/pull/126) | `tempo-sync` | Ready for review. User's report, 30/10/2026 |
 | **LFO learn under MACHINES**: FINE on every machine; MACHINES no longer opens the machine screen while [LFO] is held; several LFOs on one destination add up | [#127](https://github.com/18nelli18/Modded-Cycles/pull/127) | `lfo-machines-learn` | Ready for review. Needs #105, #113 and #121 |
@@ -113,12 +113,14 @@ quoted below are reports from a user (*Rapport d'un utilisateur*), not Maxime's 
 | **ACID articulation** (Slide, Tie, Accent, Decay) in Mod Settings › ACID, and a Devil Fish profile | [#129](https://github.com/18nelli18/Modded-Cycles/pull/129) | `acid-devilfish` | Ready for review. Needs #113; its user's report sits on top of #128's chain, 01/11/2026 |
 
 The web flasher builds the OS 2.0 only. To try one of these, build its branch from the command line
-([BUILD.md](BUILD.md)); no firmware image is distributed here.
+([BUILD.md](BUILD.md)); no firmware image is distributed here. Upstream, and not from this fork:
+[#132](https://github.com/18nelli18/Modded-Cycles/pull/132), Chord Keys 2.1 by Nico Heuser, a draft opened on
+03/11/2026 and not tested on hardware yet.
 
 ### Merge order
 
-The two drafts, #113 and #124, can land as soon as they are reviewed; #113 goes first because #127 and #129 build on
-it. Then `#117 → #118 → #119 → #120 → #121 → #124 → #123 → #126 → #127 → #128`, and `#129` right after `#113`. Each
+Both #113 and #124 are ready for review; #113 goes first because #127 and #129 build on it. Then
+`#117 → #118 → #119 → #120 → #121 → #124 → #123 → #126 → #127 → #128`, and `#129` right after `#113`. Each
 later branch is rebased on `main` and its generated files regenerated once the ones before it are in; until then a
 dependent pull request also lists the commits of what it waits for, which is expected. The draft #105 (LFO 2/3/4 on
 release) is already contained in #127.
@@ -142,8 +144,9 @@ release) is already contained in #127.
 - [FEATURES.md](FEATURES.md): the OS 2.0 as it is — every feature, every key combination, every limit and whether it
   was tested. Each pull request adds its own rows when it lands.
 - `notes/`: the technical notes, in French. They land with their pull request: `notes/81` (FUNC + SETTINGS),
-  `notes/82` (delay and LFO speed in note values), `notes/83` (Sampler filter and Res), `notes/84` (RETROSYN), `notes/85` (resonance makeup),
-  `notes/86` (track lo-fi), `notes/88` (ACID Devil Fish), `notes/56` §3.13–3.14 (LFO learn).
+  `notes/82` (delay and LFO speed in note values), `notes/83` (Sampler filter and Res), `notes/84` (RETROSYN),
+  `notes/85` (resonance makeup), `notes/86` (track lo-fi), `notes/88` (ACID Devil Fish), `notes/56` §3.13–3.14
+  (LFO learn).
 - Each pull request's description: what the user sees before and after, how it was proved, and what to try on the
   machine.
 - [The guide](https://18nelli18.github.io/Modded-Cycles/guide/): the released OS step by step. A pull request that
